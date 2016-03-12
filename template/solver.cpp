@@ -1,6 +1,6 @@
 /*
  * Compilation:
- * gcc <file>.cpp
+ * gcc -Wall -Werror -W -std=c++11 <file>.cpp
  *
  * Usage:
  * ./a.out <input file> <output file>
@@ -15,16 +15,13 @@
 #include <assert.h>
 #include <stdio.h>
 
-
 using namespace std;
 
+int main(int argc, char *argv[]) {
+    assert(argc == 3);
 
-int main(int argc, char *argv[])
-{
-	assert(argc == 3);
-
-	/* open and read file passed as first command-line argument */
-    ifstream fin (argv[1], fstream::in);
+    /* open and read file passed as first command-line argument */
+    ifstream fin(argv[1], fstream::in);
 
     /* open output file */
     ostringstream sout;
@@ -32,30 +29,27 @@ int main(int argc, char *argv[])
     ofstream fout(sout.str().c_str(), fstream::out);
 
     /* read number of cases */
-    int T;
-    fin >> T;
+    int N;
+    fin >> N;
 
-    for (int c = 1; c <= T; c++) {
+    for (int icase = 1; icase <= N; icase++) {
         /* read case */
         int N, L;
         fin >> N >> L;
         vector<string> iflow(N);
         vector<string> dflow(N);
-        for (int i = 0; i < N; i++)
-            fin >> iflow[i];
-        for (int i = 0; i < N; i++)
-            fin >> dflow[i];
+        for (int i = 0; i < N; i++) fin >> iflow[i];
+        for (int i = 0; i < N; i++) fin >> dflow[i];
 
         /* solve case */
         ostringstream answer("NOT POSSIBLE");
 
         /* store solution */
-        fout << "Case #"<< c << ": " << answer.str() << endl;
+        fout << "Case #" << icase << ": " << answer.str() << endl;
     }
 
     fout.close();
     rename(sout.str().c_str(), argv[2]);
 
-	return 0;
+    return 0;
 }
-

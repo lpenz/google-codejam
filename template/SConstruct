@@ -13,7 +13,7 @@ def envcmd(t, s, c, p):
 
 solversrc = glob.glob('solver.c*')[0]
 solver = re.sub('\.c(pp)?$', '', solversrc)
-env.Program(solversrc, CPPFLAGS='-Wall -Werror -W -g')
+env.Program(solversrc, CPPFLAGS='-Wall -Werror -W -g -std=c++11')
 
 outputs = []
 
