@@ -1,0 +1,33 @@
+
+import os
+import re
+import glob
+
+if False: Environment = None
+
+env = Environment()
+
+def envcmd(t, s, c, p):
+    env.Command(t, s, c+' '+p)
+    env.Depends(t, c)
+
+solversrc = glob.glob('solver.c*')[0]
+solver = re.sub('\.c(pp)?$', '', solversrc)
+env.Program(solversrc, CPPFLAGS='-Wall -Werror -W -g')
+
+outputs = []
+
+for i in glob.glob('*.in'):
+    b = re.sub('\.in$', '', i)
+    o = b+'.out'
+    envcmd(o, i, './'+solver, ' $SOURCE $TARGET')
+    outputs.append(o)
+    if os.path.exists(b+'.ans'):
+        env.Command(b+'.done', o, 'diff $SOURCE %s && md5sum $SOURCE > $TARGET' % (b+'.ans'))
+        env.Depends(b+'.done', b+'.ans')
+
+def showpaths(target, source, env):
+    for s in source:
+        print(os.path.abspath(str(s)))
+env.Command('all-done.txt', outputs, showpaths)
+

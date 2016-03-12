@@ -1,0 +1,6 @@
+*.o
+solver
+.sconsign.dblite
+*.out
+*.ans
+*.done
