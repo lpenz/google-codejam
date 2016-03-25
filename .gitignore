@@ -1,6 +1,9 @@
 *.o
 solver
 .sconsign.dblite
+tests
+tests_output.txt
+libgtest.a
 *.out
 *.ans
 *.done

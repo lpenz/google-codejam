@@ -17,7 +17,8 @@
 
 using namespace std;
 
-int main(int argc, char *argv[]) {
+int do_main(int argc, char* argv[])
+{
     assert(argc == 3);
 
     /* open and read file passed as first command-line argument */
@@ -29,17 +30,19 @@ int main(int argc, char *argv[]) {
     ofstream fout(sout.str().c_str(), fstream::out);
 
     /* read number of cases */
-    int N;
-    fin >> N;
+    int T;
+    fin >> T;
 
-    for (int icase = 1; icase <= N; icase++) {
+    for (int icase = 1; icase <= T; icase++) {
         /* read case */
         int N, L;
         fin >> N >> L;
         vector<string> iflow(N);
         vector<string> dflow(N);
-        for (int i = 0; i < N; i++) fin >> iflow[i];
-        for (int i = 0; i < N; i++) fin >> dflow[i];
+        for (int i = 0; i < N; i++)
+            fin >> iflow[i];
+        for (int i = 0; i < N; i++)
+            fin >> dflow[i];
 
         /* solve case */
         ostringstream answer("NOT POSSIBLE");
@@ -53,3 +56,10 @@ int main(int argc, char *argv[]) {
 
     return 0;
 }
+
+#ifndef NOMAIN
+int main(int argc, char* argv[])
+{
+    return do_main(argc, argv);
+}
+#endif
