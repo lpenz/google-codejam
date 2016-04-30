@@ -16,6 +16,7 @@ def envcmd(t, s, c, p):
 solversrc = glob.glob('solver.c*')[0]
 solver = re.sub('\.c(pp|c)?$', '', solversrc)
 env.Program(solversrc, CPPFLAGS='-Wall -Werror -W -g -std=c++11')
+env.Command('solver.zip', solversrc, 'zip $TARGET $SOURCES')
 
 outputs = []
 
