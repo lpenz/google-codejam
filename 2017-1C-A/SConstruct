@@ -1,0 +1,43 @@
+'''Build binary, run unit tests and other tests against *.in'''
+import os
+import re
+import glob
+
+if False:
+    Environment = None
+
+env = Environment()
+
+
+def envcmd(t, s, c, p):
+    env.Command(t, s, c + ' ' + p)
+    env.Depends(t, c)
+
+solversrc = glob.glob('solver.hs')[0]
+solver = re.sub('\.hs$', '', solversrc)
+env.Command(solver, solversrc, 'ghc --make $SOURCE -o $TARGET')
+env.Command('solver.zip', solversrc, 'zip $TARGET $SOURCES')
+
+outputs = []
+
+
+def inproc(i):
+    b = re.sub('\.in$', '', i)
+    o = b + '.out'
+    envcmd(o, i, './' + solver, ' < $SOURCE > $TARGET')
+    env.SideEffect(solver + '.hi', solver)
+    env.SideEffect(solver + '.o', solver)
+    outputs.append(o)
+    if os.path.exists(b + '.ans'):
+        env.Command(b + '.done', o, 'diff $SOURCE %s && md5sum $SOURCE > $TARGET' %
+                    (b + '.ans'))
+        env.Depends(b + '.done', b + '.ans')
+
+for i in glob.glob('*.in'):
+    inproc(i)
+
+
+def showpaths(target, source, env):
+    for s in source:
+        print(os.path.abspath(str(s)))
+env.Command('all-done.txt', outputs, showpaths)
